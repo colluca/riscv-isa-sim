@@ -6,6 +6,10 @@ touch $filename
 
 echo "FROM $full_tgtname" >> $filename
 echo >> $filename
+if [ $(echo $full_tgtname | cut -d ':' -f 1) = "centos" ]; then
+  echo 'RUN yum group install "Development Tools" -y && yum clean all' >> $filename
+  echo 'RUN yum install dtc -y && yum clean all' >> $filename
+fi
 if [ $(echo $full_tgtname | cut -d ':' -f 1) = "ubuntu" ]; then
   echo 'RUN apt update && apt -y install build-essential curl device-tree-compiler' >> $filename
 fi
